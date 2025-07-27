@@ -1,4 +1,4 @@
-var name ="Wellcome"
+var name =("Wellcome")
 alert(name)
 name = "My Name is Kaif"
 alert(name)
