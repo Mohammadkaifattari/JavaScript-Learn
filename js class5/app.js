@@ -180,3 +180,148 @@ var agemax=60
 var times=+prompt("How much times you Consume per day")
 var total=((age-60)*365)*3
 document.write(`FAV Snck${fav} <br> Current age is ${age} <br> estimated age ${agemax} <br> Per Day Snack ${times} <br>  You Need ${total} ${fav} to last you until the rip old age of ${agemax}`)
+
+/**
+ * Checkout helpers for a shopping cart.
+ * All functions are pure and validated.
+ */
+
+/**
+ * Compute line total for an item.
+ * @param {number} price - price per unit (>= 0)
+ * @param {number} qty - integer quantity (>= 0)
+ * @returns {number}
+ */
+export function lineTotal(price, qty) {
+  if (typeof price !== 'number' || typeof qty !== 'number') {
+    throw new TypeError('price and qty must be numbers');
+  }
+  if (price < 0 || qty < 0) {
+    throw new RangeError('price and qty must be >= 0');
+  }
+  if (!Number.isFinite(price) || !Number.isFinite(qty)) {
+    throw new RangeError('price and qty must be finite');
+  }
+  return Number((price * qty).toFixed(2));
+}
+
+/**
+ * Compute subtotal for array of items
+ * @param {{price:number, qty:number}[]} items
+ * @returns {number}
+ */
+export function subtotal(items) {
+  if (!Array.isArray(items)) {
+    throw new TypeError('items must be an array');
+  }
+  const total = items.reduce((acc, item) => {
+    if (!item || typeof item.price !== 'number' || typeof item.qty !== 'number') {
+      throw new TypeError('each item must have numeric price and qty');
+    }
+    return acc + lineTotal(item.price, item.qty);
+  }, 0);
+  return Number(total.toFixed(2));
+}
+
+/**
+ * Compute grand total including shipping and optional discount
+ * @param {{price:number, qty:number}[]} items
+ * @param {number} shipping
+ * @param {number} [discount=0] - discount amount (absolute)
+ * @returns {{subtotal:number, shipping:number, discount:number, total:number}}
+ */
+export function grandTotal(items, shipping, discount = 0) {
+  if (typeof shipping !== 'number' || typeof discount !== 'number') {
+    throw new TypeError('shipping and discount must be numbers');
+  }
+  if (shipping < 0 || discount < 0) {
+    throw new RangeError('shipping and discount must be >= 0');
+  }
+  const sub = subtotal(items);
+  const total = Number((sub + shipping - discount).toFixed(2));
+  return {
+    subtotal: sub,
+    shipping: Number(shipping.toFixed(2)),
+    discount: Number(discount.toFixed(2)),
+    total: total >= 0 ? total : 0
+  };
+}
+to
+import { lineTotal, subtotal, grandTotal } from '../src/checkout.js';
+
+describe('checkout helpers', () => {
+  test('lineTotal simple', () => {
+    expect(lineTotal(10, 3)).toBe(30);
+    expect(lineTotal(10.123, 2)).toBe(20.25); // rounded to 2 decimals
+  });
+
+  test('subtotal and grandTotal', () => {
+    const items = [{ price: 100, qty: 1 }, { price: 25.5, qty: 2 }];
+    expect(subtotal(items)).toBe(151);
+    const gt = grandTotal(items, 10, 5);
+    expect(gt.subtotal).toBe(151);
+    expect(gt.shipping).toBe(10);
+    expect(gt.discount).toBe(5);
+    expect(gt.total).toBe(156);
+  });
+
+  test('grandTotal never negative', () => {
+    const items = [{ price: 1, qty: 1 }];
+    const gt = grandTotal(items, 0, 10);
+    expect(gt.total).toBe(0);
+  });
+
+  test('invalid inputs throw', () => {
+    // a few examples
+    expect(() => lineTotal(-1, 2)).toThrow();
+    expect(() => subtotal('nope')).toThrow();
+  });
+});
+// Lightweight demo showing outputs in browser (no bundler)
+(function () {
+  // replicate logic inline (same as src for demo simplicity)
+  function lineTotal(price, qty) {
+    return Number((price * qty).toFixed(2));
+  }
+  function subtotal(items) {
+    return items.reduce((acc, i) => acc + lineTotal(i.price, i.qty), 0);
+  }
+  function grandTotal(items, shipping, discount = 0) {
+    const sub = subtotal(items);
+    const total = Number((sub + shipping - discount).toFixed(2));
+    return {
+      subtotal: Number(sub.toFixed(2)),
+      shipping: Number(shipping.toFixed(2)),
+      discount: Number(discount.toFixed(2)),
+      total: total >= 0 ? total : 0
+    };
+  }
+
+  const items = [
+    { price: 500, qty: 2 },
+    { price: 800, qty: 1 }
+  ];
+  const gt = grandTotal(items, 100);
+  const receiptEl = document.getElementById('receipt');
+  receiptEl.textContent = JSON.stringify(gt, null, 2);
+
+  function runExpressionSequence(initial = 5) {
+    const snapshots = [];
+    let v;
+    snapshots.push({ desc: 'Value after variable declaration is', value: v });
+    v = initial;
+    snapshots.push({ desc: 'Initial value', value: v });
+    v += 1;
+    snapshots.push({ desc: 'Value after increment is', value: v });
+    v += 7;
+    snapshots.push({ desc: 'Value after addition is', value: v });
+    v -= 1;
+    snapshots.push({ desc: 'Value after decrement is', value: v });
+    snapshots.push({ desc: 'The remainder is', value: v % 3 });
+    return snapshots;
+  }
+
+  const seq = runExpressionSequence();
+  const mathEl = document.getElementById('mathseq');
+  mathEl.textContent = seq.map((s) => `${s.desc}: ${s.value}`).join('\n');
+}());
