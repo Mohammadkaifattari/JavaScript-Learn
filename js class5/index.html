@@ -1,11 +1,344 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mega HTML Website — Single File Demo</title>
+  <meta name="description" content="A large, feature-rich single-file HTML website demonstrating layout, components, accessibility, and interactivity." />
+  <style>
+    /* --- Reset & base --- */
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#3b82f6; --glass: rgba(255,255,255,0.04);
+      --radius:12px; --gap:18px; --maxw:1200px; --fg:#e6eef6;
+    }
+    *{box-sizing:border-box}
+    html,body,#app{height:100%}
+    body{
+      margin:0;padding:24px;font-family:Inter,Segoe UI,Roboto,system-ui,Arial;background:linear-gradient(180deg,var(--bg),#061021);color:var(--fg);-webkit-font-smoothing:antialiased;line-height:1.45
+    }
+    a{color:inherit}
+    img{max-width:100%;height:auto;display:block}
+
+    /* --- container --- */
+    .container{max-width:var(--maxw);margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:700;color:white}
+    nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted);text-decoration:none}
+    nav a:hover{background:var(--glass);color:var(--fg)}
+
+    /* --- hero --- */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:center;margin-bottom:30px}
+    .hero-card{background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:24px;border-radius:var(--radius);backdrop-filter: blur(6px);box-shadow:0 6px 30px rgba(3,7,18,0.6)}
+    .h-title{font-size: clamp(22px,4.5vw,40px);margin:0 0 8px}
+    .h-lead{color:var(--muted);margin:0 0 16px}
+    .cta-row{display:flex;gap:12px}
+    .btn{background:var(--accent);border:none;color:white;padding:12px 16px;border-radius:10px;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--fg)}
+
+    /* --- features grid --- */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+    .feature{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:18px;border-radius:12px}
+    .feature h3{margin:0 0 8px}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
+
+    /* --- products / gallery --- */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+    .card{background:var(--card);padding:12px;border-radius:12px}
+    .price{font-weight:700;margin-top:8px}
+
+    /* --- blog list --- */
+    .blog{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+    .post{background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:14px;border-radius:12px}
+
+    /* --- form --- */
+    form{display:grid;gap:10px}
+    input,textarea,select{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--fg)}
+    label{font-size:13px;color:var(--muted)}
+
+    /* --- footer --- */
+    footer{margin-top:36px;padding:18px;border-top:1px dashed rgba(255,255,255,0.03);color:var(--muted)}
+
+    /* --- utils --- */
+    .row{display:flex;gap:12px;align-items:center}
+    .pill{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:999px;font-size:13px}
+    .badge{background:var(--accent);padding:6px 10px;border-radius:8px;font-weight:600}
+    pre.code{background:#041224;padding:12px;border-radius:8px;color:var(--muted);overflow:auto}
+
+    /* responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr}
+      .blog{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
-    <script src="app.js"></script>
+  <div class="container" id="app">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden>MG</div>
+        <div>
+          <div style="font-weight:700">MegaSite</div>
+          <div style="font-size:12px;color:var(--muted)">A huge single-file HTML showcase</div>
+        </div>
+      </div>
+      <nav aria-label="Primary navigation">
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero-card hero" role="region" aria-label="Hero">
+        <div>
+          <h1 class="h-title">Build something huge — one HTML file at a time</h1>
+          <p class="h-lead">This single-file website demonstrates layout, accessibility, responsive patterns, components, a small app, and production-ready touches — all in pure HTML/CSS/JS.</p>
+          <div class="cta-row">
+            <button class="btn" id="demoRun">Run Demo</button>
+            <button class="btn ghost" id="toggleTheme">Toggle Contrast</button>
+            <a class="pill" href="#products">Browse Products</a>
+          </div>
+
+          <div style="margin-top:16px;color:var(--muted);font-size:13px">
+            <strong>Pro tips:</strong> keyboard accessible, semantic HTML, responsive grid, prefers-reduced-motion support.
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-hidden="true">
+          <h3 style="margin-top:0">Live Checkout Preview</h3>
+          <div id="miniReceipt" class="pre" style="font-family:monospace;background:#021224;padding:12px;border-radius:8px;color:var(--muted);min-height:120px">Subtotal: —</div>
+          <div style="margin-top:12px;display:flex;gap:8px;justify-content:space-between;align-items:center">
+            <div class="pill">Cart: <strong id="cartCount">0</strong></div>
+            <div class="badge" id="cartTotal">$0</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="features" style="margin-bottom:22px">
+        <h2>Features</h2>
+        <div class="grid">
+          <div class="feature">
+            <h3>Accessible by default</h3>
+            <p>Semantic elements, ARIA labels, keyboard navigation-friendly components.</p>
+          </div>
+          <div class="feature">
+            <h3>Responsive grid</h3>
+            <p>Auto-fit, minmax and CSS clamp for fluid typography and layout.</p>
+          </div>
+          <div class="feature">
+            <h3>No build step</h3>
+            <p>Drop this file on any static host and it just works.</p>
+          </div>
+          <div class="feature">
+            <h3>Small interactive app</h3>
+            <p>Contains a tiny checkout demo, product gallery, and paste-ready code.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="products">
+        <h2>Products</h2>
+        <div class="cards" id="catalog">
+          <!-- products injected by JS -->
+        </div>
+      </section>
+
+      <section id="blog" style="margin-top:24px">
+        <h2>Latest Articles</h2>
+        <div class="blog">
+          <div>
+            <article class="post">
+              <h3>Optimizing Single-File Websites</h3>
+              <p class="muted">Learn techniques to keep file size small while providing lots of features.</p>
+              <p style="color:var(--muted);font-size:14px">This article shows how to load images progressively, use caching headers, and split concerns without a build tool.</p>
+            </article>
+            <article class="post" style="margin-top:12px">
+              <h3>Accessibility Considerations</h3>
+              <p style="color:var(--muted);font-size:14px">Semantic HTML, keyboard support, and handling motion preferences reduce friction for many users.</p>
+            </article>
+          </div>
+          <aside style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:12px">
+            <h4 style="margin-top:0">Popular tags</h4>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span class="pill">performance</span>
+              <span class="pill">design</span>
+              <span class="pill">a11y</span>
+              <span class="pill">javascript</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="contact" style="margin-top:24px">
+        <h2>Contact & Newsletter</h2>
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:16px">
+          <form id="contactForm" class="hero-card" aria-label="Contact form">
+            <label for="name">Name</label>
+            <input id="name" name="name" required placeholder="Your full name" />
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="you@example.com" />
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" placeholder="How can we help?"></textarea>
+            <div style="display:flex;gap:10px;align-items:center">
+              <button class="btn" type="submit">Send message</button>
+              <button class="btn ghost" type="button" id="clearForm">Clear</button>
+            </div>
+            <div id="formStatus" style="color:var(--muted);font-size:13px;margin-top:8px"></div>
+          </form>
+
+          <aside class="hero-card">
+            <h3 style="margin-top:0">Subscribe</h3>
+            <p style="color:var(--muted);font-size:14px">Join 12,345 subscribers for monthly tips on building fast front-ends.</p>
+            <form id="subscribeForm">
+              <label for="subEmail">Email</label>
+              <input id="subEmail" type="email" placeholder="you@example.com" required />
+              <button class="btn" type="submit">Subscribe</button>
+            </form>
+            <div id="subStatus" style="color:var(--muted);font-size:13px;margin-top:10px"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section style="margin-top:28px">
+        <h2>Interactive Code Snippet</h2>
+        <p style="color:var(--muted);font-size:14px">Copy this snippet to show a receipt in your page (vanilla JS).</p>
+        <pre class="code" id="snippet">// Click the Run demo button to see it live</pre>
+      </section>
+
+      <footer>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <div>&copy; <span id="year"></span> MegaSite — built with ❤️ in a single file</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#" id="backToTop">Back to top</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Small data model: products
+    const PRODUCTS = [
+      { id: 'p1', title: 'Ultra Sneakers', price: 89.99, img: '', desc: 'Comfortable everyday sneakers.' },
+      { id: 'p2', title: 'Noise-Cancel Headset', price: 199.0, img: '', desc: 'Block distractions and focus.' },
+      { id: 'p3', title: '4K Monitor', price: 329.5, img: '', desc: 'Crisp color and high refresh.' },
+      { id: 'p4', title: 'Mechanical Keyboard', price: 129.99, img: '', desc: 'Tactile switches and RGB.' },
+      { id: 'p5', title: 'Ergonomic Chair', price: 249.0, img: '', desc: 'Sit comfortably for longer.' },
+      { id: 'p6', title: 'Portable SSD 1TB', price: 139.99, img: '', desc: 'Fast and compact storage.' }
+    ];
+
+    // Minimal cart
+    const cart = new Map();
+
+    function formatMoney(v){return '$' + v.toFixed(2)}
+
+    // render product cards
+    function renderCatalog(){
+      const container = document.getElementById('catalog');
+      container.innerHTML = '';
+      PRODUCTS.forEach(p=>{
+        const el = document.createElement('div'); el.className='card';
+        el.innerHTML = `
+          <div style="height:120px;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));display:flex;align-items:center;justify-content:center;border-radius:8px"> <strong>${p.title}</strong></div>
+          <div style="margin-top:8px"><div style="font-size:15px">${p.title}</div><div style="color:var(--muted);font-size:13px">${p.desc}</div><div class="price">${formatMoney(p.price)}</div></div>
+        `;
+        const actions = document.createElement('div'); actions.style.marginTop='8px';
+        const add = document.createElement('button'); add.className='btn'; add.textContent='Add to cart'; add.onclick=()=>addToCart(p.id);
+        actions.appendChild(add);
+        el.appendChild(actions);
+        container.appendChild(el);
+      });
+    }
+
+    function addToCart(id){
+      const current = cart.get(id) || 0; cart.set(id, current+1);
+      updateCartUI();
+    }
+
+    function removeFromCart(id){
+      if(!cart.has(id)) return; const v = cart.get(id); if(v<=1) cart.delete(id); else cart.set(id,v-1); updateCartUI();
+    }
+
+    function updateCartUI(){
+      let subtotal=0; let count=0;
+      cart.forEach((qty,id)=>{
+        const p = PRODUCTS.find(x=>x.id===id);
+        subtotal += p.price * qty; count += qty;
+      });
+      document.getElementById('cartCount').textContent = count;
+      document.getElementById('cartTotal').textContent = formatMoney(subtotal);
+      const mini = document.getElementById('miniReceipt');
+      mini.textContent = `Items: ${count}\nSubtotal: ${formatMoney(subtotal)}\nShipping: ${formatMoney(Math.min(25, subtotal*0.05))}`;
+    }
+
+    // Demo run creates some cart activity
+    document.getElementById('demoRun').addEventListener('click', ()=>{
+      // add a few random items
+      cart.clear();
+      addToCart('p1'); addToCart('p3'); addToCart('p6'); addToCart('p6');
+      // show snippet in code block
+      document.getElementById('snippet').textContent = `// Receipt snippet\nconst subtotal = ${calculateSubtotal().toFixed(2)}; console.log('Subtotal: $'+subtotal);`;
+    });
+
+    function calculateSubtotal(){
+      let total=0; cart.forEach((qty,id)=>{ const p = PRODUCTS.find(x=>x.id===id); total += p.price*qty }); return total;
+    }
+
+    // forms
+    document.getElementById('contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      document.getElementById('formStatus').textContent = `Thanks ${name || 'friend'} — we'll reach you at ${email}.`;
+      e.target.reset();
+    });
+    document.getElementById('clearForm').addEventListener('click', ()=>{ document.getElementById('contactForm').reset(); document.getElementById('formStatus').textContent = 'Cleared.' });
+
+    document.getElementById('subscribeForm').addEventListener('submit',(e)=>{
+      e.preventDefault(); const email = document.getElementById('subEmail').value.trim(); document.getElementById('subStatus').textContent = `Subscribed ${email}!`; e.target.reset();
+    });
+
+    // toggle high contrast look
+    let contrast=false; document.getElementById('toggleTheme').addEventListener('click', ()=>{
+      contrast = !contrast; document.documentElement.style.setProperty('--bg', contrast? '#071124':'#0f1724'); document.documentElement.style.setProperty('--accent', contrast? '#06b6d4':'#3b82f6');
+    });
+
+    // back to top
+    document.getElementById('backToTop').addEventListener('click',(e)=>{ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'})});
+
+    // paste large year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // initial render
+    renderCatalog(); updateCartUI();
+
+    // Accessibility: respect reduced motion
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(prefersReduced) console.log('Reduced motion enabled — animations minimized');
+
+    // Performance tip: lazy load images (placeholder used here) — real life would use IntersectionObserver
+
+    // Small keyboard shortcuts for demo
+    window.addEventListener('keydown',(e)=>{
+      if((e.ctrlKey || e.metaKey) && e.key === '1'){
+        document.getElementById('demoRun').click();
+      }
+      if((e.ctrlKey || e.metaKey) && e.key === '2'){
+        document.getElementById('toggleTheme').click();
+      }
+    });
+
+    // Expose minimal API for dev console
+    window.__MegaSite = {
+      PRODUCTS, cart, addToCart, removeFromCart, calculateSubtotal
+    };
+  </script>
 </body>
 </html>
