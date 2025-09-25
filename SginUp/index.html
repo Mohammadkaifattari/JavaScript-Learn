@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Home Screen -->
+    <div id="first">
+        <h1>Welcome To Our Site</h1>
+        <button class="btns" onclick="showSignIn()">Sign In</button>
+        <button class="btns" style="margin-left: 20px;" onclick="showSignUp()">Sign Up</button>
+        <p style="font-size: 40px; max-width: 800px; margin: 20px auto;">
+            Lorem ipsum dolor Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, voluptates debitis
+            facilis commodi dolorem dolore asperiores, quae placeat tempora esse accusamus natus, magnam similique
+            maiores neque! Accusamus, non quibusdam. Odit. sit amet consectetur adipisicing elit. Dicta numquam sed vero
+            quis asperiores nam molestias consequatur distinctio quisquam quae.
+        </p>
+    </div>
+
+    <!-- Sign In -->
+    <div id="Signin">
+        <form onsubmit="SignIn(event)">
+            <h1 id="text">Sign In</h1>
+            <input type="email" placeholder="xyz@gmail.com" required id="given-email">
+            <input type="password" placeholder="Password" required id="given-password">
+            <button type="submit" class="btns">Sign In</button>
+        </form>
+    </div>
+
+    <!-- Sign Up -->
+    <div id="container">
+        <h1>Sign Up</h1>
+        <form onsubmit="SignUp(event)">
+            <input type="text" placeholder="First Name" required id="FirstName">
+            <input type="text" placeholder="Second Name" required id="SecondName">
+            <input type="email" placeholder="xyz@gmail.com" required id="email">
+            <input type="password" placeholder="Password" required id="password">
+            <button type="submit" class="btns">Sign Up</button>
+        </form>
+    </div>
+    <script src="apps.js"></script>
+</body>
+
+</html>
